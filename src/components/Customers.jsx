@@ -3,25 +3,21 @@ import { useDispatch, useSelector } from 'react-redux'
 import 'antd/dist/antd.min.css';
 import { Table, Button, notification } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
+import { getCustomers, removeCustomer } from '../redux/actions/customers.action';
 
 
 function Customers() {
 
-    const [customer, setcustomer] = useState([]);
-
-    useEffect(() => {
-        fetch('https://northwind.vercel.app/api/customers')
-            .then(res => res.json())
-            .then(data => setcustomer(data));
-    }, []);
 
     const dispatch = useDispatch();
-    const cart = useSelector(state=>state)
+    const customers = useSelector(state => state)
 
-    const add = (item) => {
-        if (!cart.includes(item)) {
-            dispatch({ type: 'ADD_TO_CART', payload: item })
-        }
+    useEffect(() => {
+        dispatch(getCustomers())
+    }, [])
+
+    const remove = (id) => {
+        dispatch(removeCustomer(id))
     }
 
 
@@ -43,19 +39,19 @@ function Customers() {
             render: (address) => <p>{address.city}, {address.country}</p>,
         },
         {
-            title: "Add to Favorites",
+            title: "Remove",
             dataIndex: "id",
             key: "id",
-            render: (value, data) => <Button onClick={() => add(data)} type='primary'>Add to Favorites</Button>,
-
+            render: (value, data) => <Button onClick={() => remove(value)} type='danger'>Delete Customer</Button>,
         }
+
     ];
 
 
     return (
         <div className="site-layout-content">
             <Content style={{ padding: '0 100px' }}>
-                <Table columns={columns} dataSource={customer} rowKey='id' />
+                <Table columns={columns} dataSource={customers} rowKey='id' />
             </Content>
         </div>
     )

@@ -2,12 +2,12 @@ import './App.css';
 import { Route, Routes } from 'react-router-dom';
 import Customers from './components/Customers';
 import SiteHeader from './components/SiteHeader';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import { cartReducer } from './redux/reducers/cart.reducer';
-import Cart from './components/Cart';
+import thunk from 'redux-thunk';
+import customerReducer from './redux/reducers/customerReducer';
 
-const codeStore = createStore(cartReducer)
+const codeStore = createStore(customerReducer, applyMiddleware(thunk))
 
 
 function App() {
@@ -16,7 +16,6 @@ function App() {
       <SiteHeader />
       <Routes>
         <Route path='/' element={< Customers />} />
-        <Route path='/cart' element={< Cart />} />
       </Routes>
     </Provider>
   );
