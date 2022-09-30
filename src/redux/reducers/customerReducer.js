@@ -5,8 +5,10 @@ export default function (state = [], action) {
             return [...action.payload]
 
         case 'DELETE_USER':
-            return [...state.filter(q=>q.id !== action.payload)]
+            return [...state.filter(q => q.id !== action.payload)]
 
+        case "post_data":
+            return [...action.payload];
         default:
             return state
     }

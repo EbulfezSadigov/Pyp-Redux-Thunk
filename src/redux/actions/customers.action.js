@@ -20,3 +20,16 @@ export const removeCustomer = (id) => {
         }
     )
 }
+
+export const postData = (data) => {
+    return async () => {
+      axios.post("https://northwind.vercel.app/api/customers",data)
+     
+      return async (dispatch) => {
+        axios.get("https://northwind.vercel.app/api/customers")
+          .then((data) => {
+            dispatch({ type: "post_data", payload: data.data });
+          });
+      };
+    };
+  };
